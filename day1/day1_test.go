@@ -1,13 +1,11 @@
 package day1_test
 
 import (
-	"bufio"
-	"io"
-	"os"
 	"strconv"
 	"testing"
 
 	"github.com/jlevesy/aoc/day1"
+	"github.com/jlevesy/aoc/pkg/input"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -32,8 +30,7 @@ func TestCountIncreases(t *testing.T) {
 }
 
 func TestCountIncreases_Answer(t *testing.T) {
-	input, err := readInput(t)
-	require.NoError(t, err)
+	input := readInput(t)
 
 	t.Log("Total of increases", day1.CountIncreases(input))
 }
@@ -44,37 +41,27 @@ func TestCountIncreasesSlidingWindows(t *testing.T) {
 }
 
 func TestCountIncreasesSlidingWindows_Answer(t *testing.T) {
-	input, err := readInput(t)
-	require.NoError(t, err)
+	input := readInput(t)
 
 	t.Log("Total of increases with sliding windows", day1.CountIncreasesSlidingWindows(input))
 }
 
-func readInput(t *testing.T) ([]int, error) {
+func readInput(t *testing.T) []int {
 	t.Helper()
 
-	file, err := os.Open("./fixtures/input.txt")
-	require.NoError(t, err)
+	var result []int
 
-	defer file.Close()
-
-	return parseInput(file)
-}
-
-func parseInput(input io.Reader) ([]int, error) {
-	var (
-		scanner = bufio.NewScanner(input)
-		result  []int
-	)
-
-	for scanner.Scan() {
-		value, err := strconv.Atoi(scanner.Text())
+	err := input.ReadInput("./fixtures/input.txt", func(line string) error {
+		value, err := strconv.Atoi(line)
 		if err != nil {
-			return nil, err
+			return err
 		}
 
 		result = append(result, value)
-	}
 
-	return result, scanner.Err()
+		return nil
+	})
+	require.NoError(t, err)
+
+	return result
 }
