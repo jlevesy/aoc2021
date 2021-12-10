@@ -27,7 +27,6 @@ var example = [][]uint8{
 
 func TestEvaluatePowerConsumption(t *testing.T) {
 	report := day3.EvaluatePowerConsumption(example)
-	t.Log(report.GammaRate, report.EpsilonRate)
 	assert.Equal(t, 198, report.GammaRate*report.EpsilonRate)
 }
 
@@ -40,6 +39,26 @@ func TestEvaluatePowerConsumption_Answer(t *testing.T) {
 		report.GammaRate,
 		report.EpsilonRate,
 		report.GammaRate*report.EpsilonRate,
+	)
+}
+
+func TestEvaluateLifeSupport(t *testing.T) {
+	report, err := day3.EvaluateLifeSupport(example)
+	require.NoError(t, err)
+	assert.Equal(t, 23, report.OxygenRating)
+	assert.Equal(t, 10, report.CO2Rating)
+}
+
+func TestEvaluateLifeSupport_Answer(t *testing.T) {
+	input := readInput(t)
+	report, err := day3.EvaluateLifeSupport(input)
+	require.NoError(t, err)
+
+	t.Logf(
+		"OxygenRating %d, CO2Rating %d, multiplication is %d",
+		report.OxygenRating,
+		report.CO2Rating,
+		report.OxygenRating*report.CO2Rating,
 	)
 }
 
